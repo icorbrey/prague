@@ -2,5 +2,6 @@
 
 pub mod api;
 pub mod request;
+pub mod response;
 pub mod status;
 pub mod try_take;

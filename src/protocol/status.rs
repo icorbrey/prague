@@ -1,7 +1,5 @@
 //! Includes types and functionality for determining the status of various Kafka operations.
 
-use super::try_take::TryReadable;
-
 /// Numeric error codes that indicate what problem occurred on the server.
 ///
 /// See: <https://kafka.apache.org/protocol.html#protocol_error_codes>
