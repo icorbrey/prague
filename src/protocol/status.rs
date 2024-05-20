@@ -1,5 +1,7 @@
 //! Includes types and functionality for determining the status of various Kafka operations.
 
+use super::try_take::TryReadable;
+
 /// Numeric error codes that indicate what problem occurred on the server.
 ///
 /// See: <https://kafka.apache.org/protocol.html#protocol_error_codes>
@@ -409,7 +411,7 @@ pub enum ErrorCode {
 
 impl ErrorCode {
     /// Attempts to resolve an [`ErrorCode`] from the given integer.
-    pub fn parse(value: i32) -> Result<Option<ErrorCode>, ()> {
+    pub fn parse(value: i32) -> Result<Option<ErrorCode>, String> {
         match value {
             -1 => Ok(Some(Self::UnknownServerError)),
             0 => Ok(None),
@@ -531,7 +533,7 @@ impl ErrorCode {
             117 => Ok(Some(Self::UnknownSubscriptionId)),
             118 => Ok(Some(Self::TelemetryTooLarge)),
             119 => Ok(Some(Self::InvalidRegistration)),
-            _ => Err(()),
+            x => Err(format!("Code was not a valid status: {0}", x)),
         }
     }
 

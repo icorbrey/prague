@@ -1,4 +1,10 @@
+use std::io::prelude::Read;
+
+use super::try_take::{TryReadable, TryTake};
+
 /// Numeric codes that the ApiKey in a request can take.
+///
+/// See: <https://kafka.apache.org/protocol.html#protocol_api_keys>
 pub enum ApiKey {
     Produce,
     Fetch,
@@ -24,11 +30,11 @@ pub enum ApiKey {
     DeleteRecords,
     InitProducerId,
     OffsetForLeaderEpoch,
-    AddPartitionsToTxn,
-    AddOffsetsToTxn,
-    EndTxn,
-    WriteTxnMarkers,
-    TxnOffsetCommit,
+    AddPartitionsToTransaction,
+    AddOffsetsToTransaction,
+    EndTransaction,
+    WriteTransactionMarkers,
+    TransactionOffsetCommit,
     DescribeAcls,
     CreateAcls,
     DeleteAcls,
@@ -70,7 +76,7 @@ pub enum ApiKey {
 }
 
 impl TryFrom<i16> for ApiKey {
-    type Error = ();
+    type Error = String;
 
     fn try_from(value: i16) -> Result<Self, Self::Error> {
         match value {
@@ -98,11 +104,11 @@ impl TryFrom<i16> for ApiKey {
             21 => Ok(Self::DeleteRecords),
             22 => Ok(Self::InitProducerId),
             23 => Ok(Self::OffsetForLeaderEpoch),
-            24 => Ok(Self::AddPartitionsToTxn),
-            25 => Ok(Self::AddOffsetsToTxn),
-            26 => Ok(Self::EndTxn),
-            27 => Ok(Self::WriteTxnMarkers),
-            28 => Ok(Self::TxnOffsetCommit),
+            24 => Ok(Self::AddPartitionsToTransaction),
+            25 => Ok(Self::AddOffsetsToTransaction),
+            26 => Ok(Self::EndTransaction),
+            27 => Ok(Self::WriteTransactionMarkers),
+            28 => Ok(Self::TransactionOffsetCommit),
             29 => Ok(Self::DescribeAcls),
             30 => Ok(Self::CreateAcls),
             31 => Ok(Self::DeleteAcls),
@@ -141,7 +147,18 @@ impl TryFrom<i16> for ApiKey {
             71 => Ok(Self::GetTelemetrySubscriptions),
             72 => Ok(Self::PushTelemetry),
             74 => Ok(Self::ListClientMetricsResources),
-            _ => Err(()),
+            x => Err(format!("Code was not a valid API key: {0}", x)),
         }
+    }
+}
+
+impl TryReadable for ApiKey {
+    fn try_read_from<R: Read + TryTake>(mut reader: R) -> Result<Self, String>
+    where
+        Self: Sized,
+    {
+        (reader.try_take::<i16>())
+            .map_err(|e| format!("Unable to read API key: {0}", e))?
+            .try_into()
     }
 }
