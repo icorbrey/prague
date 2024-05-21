@@ -8,6 +8,7 @@ repository = "https://github.com/icorbrey/prague"
 license = "MIT OR Apache-2.0"
 keywords = ["kafka"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[workspace]
+members = ["prague_protocol"]
 
 [dependencies]

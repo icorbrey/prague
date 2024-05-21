@@ -1,6 +1,8 @@
-use std::io::prelude::Read;
-
-use super::try_take::{TryReadable, TryTake};
+#[derive(thiserror::Error, Debug)]
+pub enum Error {
+    #[error("API key `{0}` is not valid")]
+    InvalidApiKey(i16),
+}
 
 /// Numeric codes that the ApiKey in a request can take.
 ///
@@ -76,7 +78,7 @@ pub enum ApiKey {
 }
 
 impl TryFrom<i16> for ApiKey {
-    type Error = String;
+    type Error = Error;
 
     fn try_from(value: i16) -> Result<Self, Self::Error> {
         match value {
@@ -147,18 +149,7 @@ impl TryFrom<i16> for ApiKey {
             71 => Ok(Self::GetTelemetrySubscriptions),
             72 => Ok(Self::PushTelemetry),
             74 => Ok(Self::ListClientMetricsResources),
-            x => Err(format!("Code was not a valid API key: {0}", x)),
+            code => Err(Error::InvalidApiKey(code)),
         }
-    }
-}
-
-impl TryReadable for ApiKey {
-    fn try_read_from<R: Read + TryTake>(mut reader: R) -> Result<Self, String>
-    where
-        Self: Sized,
-    {
-        (reader.try_take::<i16>())
-            .map_err(|e| format!("Unable to read API key: {0}", e))?
-            .try_into()
     }
 }

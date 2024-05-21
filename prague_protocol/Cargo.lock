@@ -3,10 +3,6 @@
 version = 3
 
 [[package]]
-name = "prague"
-version = "0.0.0"
-
-[[package]]
 name = "prague_protocol"
 version = "0.1.0"
 dependencies = [
