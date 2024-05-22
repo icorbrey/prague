@@ -4,5 +4,4 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-obake = "1.0.5"
 thiserror = "1.0.61"
