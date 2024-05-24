@@ -7,8 +7,9 @@ pub mod fetch;
 pub mod headers;
 pub mod isolation_level;
 pub mod list_offsets;
+pub mod metadata;
 pub mod network;
-pub mod primitives;
+pub mod types;
 pub mod produce;
 pub mod records;
 

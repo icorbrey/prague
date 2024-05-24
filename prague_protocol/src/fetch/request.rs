@@ -1,5 +1,6 @@
-use crate::{isolation_level::IsolationLevel, primitives::prelude::*};
+use crate::{isolation_level::IsolationLevel, types::prelude::*};
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct FetchRequest {
     /// The maximum time in milliseconds to wait for the response.
     pub max_wait: Duration,
@@ -34,6 +35,7 @@ pub struct FetchRequest {
     pub tagged_fields: TaggedFields,
 }
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct Topic {
     /// This topic's unique ID.
     pub id: Uuid,
@@ -45,6 +47,7 @@ pub struct Topic {
     pub tagged_fields: TaggedFields,
 }
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct Partition {
     /// This partition's index.
     pub index: PartitionIndex,
@@ -70,6 +73,7 @@ pub struct Partition {
     pub tagged_fields: TaggedFields,
 }
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct TopicToForget {
     /// This topic's unique ID.
     pub id: Uuid,

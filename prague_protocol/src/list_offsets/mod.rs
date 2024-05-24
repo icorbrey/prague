@@ -8,6 +8,7 @@ pub mod prelude {
     pub use super::{request::ListOffsetsRequest, response::ListOffsetsResponse, ListOffsetsApi};
 }
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct ListOffsetsApi;
 
 impl Api for ListOffsetsApi {

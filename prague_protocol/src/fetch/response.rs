@@ -1,9 +1,6 @@
-use crate::{
-    error_code::ErrorCode,
-    primitives::{prelude::*, ProducerId},
-    records::RecordBatch,
-};
+use crate::{error_code::ErrorCode, records::Records, types::prelude::*};
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct FetchResponse {
     /// If the associated fetch request violated a quota, the duration for which the request was
     /// throttled. Otherwise, None.
@@ -22,6 +19,7 @@ pub struct FetchResponse {
     pub tagged_fields: TaggedFields,
 }
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct Topic {
     /// This topic's unique ID.
     pub id: Uuid,
@@ -33,6 +31,7 @@ pub struct Topic {
     pub tagged_fields: TaggedFields,
 }
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct Partition {
     /// This partition's index.
     pub index: PartitionIndex,
@@ -58,12 +57,13 @@ pub struct Partition {
     pub preferred_read_replica: BrokerId,
 
     /// The fetched record data.
-    pub records: RecordBatch,
+    pub records: Records,
 
     /// This partition response's tagged fields.
     pub tagged_fields: TaggedFields,
 }
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct AbortedTransaction {
     /// The producer ID associated with this aborted transaction.
     pub producer_id: ProducerId,

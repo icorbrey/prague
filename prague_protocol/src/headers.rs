@@ -1,5 +1,6 @@
-use crate::{api::prelude::*, primitives::tagged_fields::TaggedFields};
+use crate::{api::prelude::*, types::tagged_fields::TaggedFields};
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct Request {
     /// The API key of this request.
     pub api_key: ApiKey,
@@ -17,6 +18,7 @@ pub struct Request {
     pub tagged_fields: TaggedFields,
 }
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct Response {
     /// The correlation ID of this response.
     pub correlation_id: i32,

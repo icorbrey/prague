@@ -1,5 +1,6 @@
-use crate::{isolation_level::IsolationLevel, primitives::prelude::*};
+use crate::{isolation_level::IsolationLevel, types::prelude::*};
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct ListOffsetsRequest {
     /// If this request is being made by a broker, the ID of the broker. Otherwise, None.
     pub replica_id: Option<BrokerId>,
@@ -14,6 +15,7 @@ pub struct ListOffsetsRequest {
     pub tagged_fields: TaggedFields,
 }
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct Topic {
     /// This topic's name.
     pub name: String,
@@ -25,6 +27,7 @@ pub struct Topic {
     pub tagged_fields: TaggedFields,
 }
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct Partition {
     /// The index of this partition.
     pub index: PartitionIndex,

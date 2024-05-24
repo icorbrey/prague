@@ -1,41 +1,91 @@
-use crate::{acks::AckRequirement, primitives::prelude::*, records::RecordBatch};
+//! Includes definitions for requests to [ProduceApi](super::ProduceApi).
+//!
+//! ## See also
+//!
+//! - <https://kafka.apache.org/protocol.html#protocol_messages>
+//! - <https://github.com/apache/kafka/blob/trunk/clients/src/main/resources/common/message/ProduceRequest.json>
 
+use crate::{acks::AckRequirement, records::Records, types::prelude::*};
+
+/// A request to produce data.
+///
+/// ## See also
+///
+/// - <https://kafka.apache.org/protocol.html#protocol_messages>
+/// - <https://github.com/apache/kafka/blob/trunk/clients/src/main/resources/common/message/ProduceRequest.json>
 pub struct ProduceRequest {
-    /// If the producer is transactional, Some(id), otherwise None.
+    /// The transactional ID, or None if the producer is not transactional.
+    ///
+    /// This ID is used for authorization when attempting to write transactional data.
+    ///
+    /// Versions: 3+
     pub transactional_id: Option<String>,
 
-    /// The number of acknowledgements the producer requires the leader to have received before
-    /// considering a request complete.
-    pub ack_requirement: AckRequirement,
+    /// The number of acknowledgments the producer requires the leader to have received before
+    /// considering a request complete. Allowed values: 0 for no acknowledgments, 1 for only the
+    /// leader and -1 for the full ISR.
+    ///
+    /// Versions: 0+
+    pub acks: AckRequirement,
 
     /// The timeout to await a response in milliseconds.
-    pub timeout: Duration,
+    ///
+    /// Versions: 0+
+    pub timeout: i32,
 
-    /// The list of topics to produce to.
-    pub topics: Vec<Topic>,
+    /// Each topic to produce to.
+    ///
+    /// Versions: 0+
+    pub topics: Vec<TopicProduceTarget>,
 
-    /// This request's tagged fields.
+    /// The tagged fields.
+    ///
+    /// Versions: 9+
     pub tagged_fields: TaggedFields,
 }
 
-pub struct Topic {
-    /// This topic's name.
+/// A topic to produce to.
+///
+/// ## See also
+///
+/// - <https://kafka.apache.org/protocol.html#protocol_messages>
+/// - <https://github.com/apache/kafka/blob/trunk/clients/src/main/resources/common/message/ProduceRequest.json>
+pub struct TopicProduceTarget {
+    /// The topic name.
+    ///
+    /// Versions: 0+
     pub name: String,
 
-    /// The list of partitions to produce to.
-    pub partitions: Vec<Partition>,
+    /// Each partition to produce to.
+    ///
+    /// Versions: 0+
+    pub partitions: Vec<PartitionProduceTarget>,
 
-    /// This topic's tagged fields.
+    /// The tagged fields.
+    ///
+    /// Versions: 9+
     pub tagged_fields: TaggedFields,
 }
 
-pub struct Partition {
-    /// This partition's index.
-    pub index: PartitionIndex,
+/// A partition to produce to.
+///
+/// ## See also
+///
+/// - <https://kafka.apache.org/protocol.html#protocol_messages>
+/// - <https://github.com/apache/kafka/blob/trunk/clients/src/main/resources/common/message/ProduceRequest.json>
+pub struct PartitionProduceTarget {
+    /// The partition index.
+    ///
+    /// Version: 0+
+    pub index: i32,
 
-    /// The batch of records to produce to this partition.
-    pub records: RecordBatch,
+    /// The record data to be produced.
+    ///
+    /// Versions: 0+
+    pub records: Records,
 
-    /// This partition's tagged fields.
+    /// The tagged fields.
+    ///
+    /// Versions: 9+
     pub tagged_fields: TaggedFields,
 }

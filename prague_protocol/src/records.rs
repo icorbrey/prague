@@ -1,4 +1,4 @@
-use crate::primitives::*;
+use crate::types::prelude::*;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -6,20 +6,26 @@ pub enum Error {
     InvalidRecordBatchCompression(i16),
 }
 
-pub struct RecordBatch {
-    pub base_offset: i64,
+///
+/// See: <https://kafka.apache.org/documentation/#recordbatch>
+pub struct Records {
+    pub base_offset: Offset,
     pub batch_length: i32,
-    pub partition_leader_epoch: i32,
+    pub partition_leader_epoch: Epoch,
     pub magic_number: i8,
-    pub crc: u32,
-    pub attributes: i16,
-    pub last_offset_delta: i32,
-    pub base_timestamp: i64,
-    pub max_timestamp: i64,
-    pub producer_id: i64,
+    pub crc: CyclicRedundancyCheck,
+    pub attributes: RecordBatchAttributes,
+    pub last_offset_delta: Duration,
+    pub base_timestamp: Timestamp,
+    pub max_timestamp: Timestamp,
+    pub producer_id: ProducerId,
     pub producer_epoch: i16,
     pub base_sequence: i32,
     pub records: Vec<Record>,
+}
+
+impl Records {
+    pub const MAGIC_NUMBER: i8 = 2;
 }
 
 /// Describes the attributes of a [record batch](RecordBatch).
@@ -92,21 +98,17 @@ impl TryFrom<i16> for RecordBatchCompression {
     }
 }
 
-impl RecordBatch {
-    pub const MAGIC_NUMBER: i8 = 2;
-}
-
 pub struct Record {
     pub length: VarInt,
     pub attributes: i8,
     pub timestamp_delta: VarLong,
     pub offset_delta: VarInt,
-    pub key: Buffer,
-    pub value: Buffer,
+    pub key: Vec<u8>,
+    pub value: Vec<u8>,
     pub headers: Vec<Header>,
 }
 
 pub struct Header {
     pub key: String,
-    pub value: Buffer,
+    pub value: Vec<u8>,
 }

@@ -8,6 +8,7 @@ pub mod prelude {
     pub use super::{request::FetchRequest, response::FetchResponse, FetchApi};
 }
 
+/// See: <https://kafka.apache.org/protocol.html#protocol_messages>
 pub struct FetchApi;
 
 impl Api for FetchApi {
