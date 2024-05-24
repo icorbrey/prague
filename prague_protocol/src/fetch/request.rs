@@ -2,7 +2,7 @@ use crate::{isolation_level::IsolationLevel, primitives::prelude::*};
 
 pub struct FetchRequest {
     /// The maximum time in milliseconds to wait for the response.
-    pub max_wait: i32,
+    pub max_wait: Duration,
 
     /// The minimum number of bytes to accumulate in the response.
     pub min_bytes: i32,
@@ -19,7 +19,7 @@ pub struct FetchRequest {
     pub session_id: i32,
 
     /// The fetch session's epoch, which is used for ordering requests in a session.
-    pub session_epoch: i32,
+    pub session_epoch: Epoch,
 
     /// The list of topics to fetch.
     pub topics: Vec<Topic>,
@@ -47,19 +47,19 @@ pub struct Topic {
 
 pub struct Partition {
     /// This partition's index.
-    pub index: i32,
+    pub index: PartitionIndex,
 
     /// The epoch of the current leader for this partition.
-    pub current_leader_epoch: i32,
+    pub current_leader_epoch: Epoch,
 
     /// The message offset.
-    pub fetch_offset: i64,
+    pub fetch_offset: Offset,
 
     /// If previously fetched, the epoch of the last fetched record, otherwise None.
-    pub last_fetched_epoch: Option<i32>,
+    pub last_fetched_epoch: Option<Epoch>,
 
     /// The earliest available offset of the follower replica.
-    pub log_start_offset: i64,
+    pub log_start_offset: Offset,
 
     /// The maximum number of bytes to fetch from this partition.
     ///
@@ -75,7 +75,7 @@ pub struct TopicToForget {
     pub id: Uuid,
 
     /// The indices of the partitions to forget.
-    pub partition_indices: Vec<i32>,
+    pub partition_indices: Vec<PartitionIndex>,
 
     /// This forgotten topic's tagged fields.
     pub tagged_fields: TaggedFields,

@@ -1,7 +1,21 @@
 pub mod field;
-pub mod prelude;
 pub mod tagged_fields;
 pub mod uuid;
+
+pub mod prelude {
+    pub use super::{
+        field::Field, tagged_fields::TaggedFields, uuid::Uuid, BrokerId, Buffer, Duration, Epoch,
+        Offset, PartitionIndex, ProducerId, Timestamp, VarInt, VarLong,
+    };
+}
+
+pub type BrokerId = i32;
+pub type Duration = i32;
+pub type Epoch = i32;
+pub type Offset = i64;
+pub type PartitionIndex = i32;
+pub type ProducerId = i64;
+pub type Timestamp = i64;
 
 pub struct VarInt;
 

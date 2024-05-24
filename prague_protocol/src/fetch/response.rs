@@ -1,9 +1,13 @@
-use crate::{error_code::ErrorCode, primitives::prelude::*, records::RecordBatch};
+use crate::{
+    error_code::ErrorCode,
+    primitives::{prelude::*, ProducerId},
+    records::RecordBatch,
+};
 
 pub struct FetchResponse {
     /// If the associated fetch request violated a quota, the duration for which the request was
     /// throttled. Otherwise, None.
-    pub throttle_time: Option<i32>,
+    pub throttle_time: Option<Duration>,
 
     /// This fetch response's overall status code.
     pub error_code: Option<ErrorCode>,
@@ -12,46 +16,46 @@ pub struct FetchResponse {
     pub session_id: Option<i32>,
 
     /// The list of responses from each topic.
-    pub topic_responses: Vec<TopicResponse>,
+    pub topic_responses: Vec<Topic>,
 
     /// This fetch response's tagged fields.
     pub tagged_fields: TaggedFields,
 }
 
-pub struct TopicResponse {
+pub struct Topic {
     /// This topic's unique ID.
     pub id: Uuid,
 
     /// The responses from this topic's partitions.
-    pub partitions: Vec<PartitionResponse>,
+    pub partitions: Vec<Partition>,
 
-    /// This topic response's tagged fields.
+    /// This topic's tagged fields.
     pub tagged_fields: TaggedFields,
 }
 
-pub struct PartitionResponse {
+pub struct Partition {
     /// This partition's index.
-    pub index: i32,
+    pub index: PartitionIndex,
 
     /// This partition's error code if something went wrong, otherwise None.
     pub error_code: Option<ErrorCode>,
 
     /// The current high watermark.
-    pub high_watermark: i64,
+    pub high_watermark: Offset,
 
     /// The last stable offset (or LSO) of this partition. This is the last offset such that the
     /// state of all transactional records prior to this offset have been decided (i.e. ABORTED or
     /// COMMITTED).
-    pub last_stable_offset: i64,
+    pub last_stable_offset: Offset,
 
     /// The current log start offset.
-    pub log_start_offset: i64,
+    pub log_start_offset: Offset,
 
     /// The list of aborted transactions for this partition.
     pub aborted_transactions: Vec<AbortedTransaction>,
 
     /// The preferred read replica for the consumer to use on its next fetch request.
-    pub preferred_read_replica: i32,
+    pub preferred_read_replica: BrokerId,
 
     /// The fetched record data.
     pub records: RecordBatch,
@@ -62,10 +66,10 @@ pub struct PartitionResponse {
 
 pub struct AbortedTransaction {
     /// The producer ID associated with this aborted transaction.
-    pub producer_id: i64,
+    pub producer_id: ProducerId,
 
     /// The first offset in this aborted transaction.
-    pub first_offset: i64,
+    pub first_offset: Offset,
 
     /// This aborted transaction's tagged fields.
     pub tagged_fields: TaggedFields,

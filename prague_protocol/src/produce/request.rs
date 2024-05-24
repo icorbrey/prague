@@ -9,7 +9,7 @@ pub struct ProduceRequest {
     pub ack_requirement: AckRequirement,
 
     /// The timeout to await a response in milliseconds.
-    pub timeout: i32,
+    pub timeout: Duration,
 
     /// The list of topics to produce to.
     pub topics: Vec<Topic>,
@@ -31,7 +31,7 @@ pub struct Topic {
 
 pub struct Partition {
     /// This partition's index.
-    pub index: i32,
+    pub index: PartitionIndex,
 
     /// The batch of records to produce to this partition.
     pub records: RecordBatch,

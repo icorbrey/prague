@@ -1,7 +1,10 @@
-use self::api_key::ApiKey;
+use self::prelude::*;
 
 pub mod api_key;
-pub mod prelude;
+
+pub mod prelude {
+    pub use super::{api_key::ApiKey, Api};
+}
 
 pub trait Api {
     const KEY: ApiKey;

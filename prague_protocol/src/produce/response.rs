@@ -6,7 +6,7 @@ pub struct ProduceResponse {
 
     /// If the associated produce request violated a quota, the duration for which the request was
     /// throttled. Otherwise, None.
-    pub throttle_time: Option<i32>,
+    pub throttle_time: Option<Duration>,
 
     /// This produce response's tagged fields.
     pub tagged_fields: TaggedFields,
@@ -22,20 +22,20 @@ pub struct TopicResponse {
 
 pub struct PartitionResponse {
     /// This partition's index.
-    pub index: i32,
+    pub index: PartitionIndex,
 
     /// If the request was unsuccessful, the error code. Otherwise, None.
     pub error_code: Option<ErrorCode>,
 
     /// This partition's base offset.
-    pub base_offset: i64,
+    pub base_offset: Offset,
 
     /// If LogAppendTime is used for the topic, the broker local time when the messages are
     /// appended. Otherwise, None.
-    pub log_append_time: Option<i64>,
+    pub log_append_time: Option<Timestamp>,
 
     /// The log start offset.
-    pub log_start_offset: i64,
+    pub log_start_offset: Offset,
 
     /// The list of records that caused batches to be dropped.
     pub record_batch_errors: Vec<RecordBatchError>,
