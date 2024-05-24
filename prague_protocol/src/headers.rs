@@ -1,4 +1,4 @@
-use crate::{api::ApiKey, primitives::tagged_fields::TaggedFields};
+use crate::{api::prelude::*, primitives::tagged_fields::TaggedFields};
 
 pub struct Request {
     /// The API key of this request.

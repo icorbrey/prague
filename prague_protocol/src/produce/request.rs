@@ -1,4 +1,4 @@
-use crate::{acks::AckRequirement, primitives::tagged_fields::TaggedFields, records::RecordBatch};
+use crate::{acks::AckRequirement, primitives::prelude::*, records::RecordBatch};
 
 pub struct ProduceRequest {
     /// If the producer is transactional, Some(id), otherwise None.

@@ -1,8 +1,8 @@
-use crate::{error_code::ErrorCode, primitives::tagged_fields::TaggedFields};
+use crate::{error_code::ErrorCode, primitives::prelude::*};
 
 pub struct ProduceResponse {
     /// Responses from each topic that was produced to.
-    pub responses: Vec<TopicResponse>,
+    pub topic_responses: Vec<TopicResponse>,
 
     /// If the associated produce request violated a quota, the duration for which the request was
     /// throttled. Otherwise, None.

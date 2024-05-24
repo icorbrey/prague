@@ -8,7 +8,10 @@ pub enum Error {
 ///
 /// See: <https://kafka.apache.org/protocol.html#protocol_api_keys>
 pub enum ApiKey {
+    /// The API key for the [`ProduceApi`](crate::produce::ProduceApi).
     Produce,
+
+    /// The API key for the [`FetchApi`](crate::fetch::FetchApi).
     Fetch,
     ListOffsets,
     Metadata,
